@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NULLSECTOR Login</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#050505;
+font-family:Consolas,monospace;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+color:#00ff88;
+}
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle,#00ff8830 1px,transparent 1px);
+background-size:35px 35px;
+animation:grid 20s linear infinite;
+}
+
+@keyframes grid{
+from{transform:translateY(0);}
+to{transform:translateY(-35px);}
+}
+
+.login-box{
+
+width:500px;
+background:#111;
+padding:40px;
+border:2px solid #00ff88;
+border-radius:10px;
+box-shadow:
+0 0 20px #00ff88,
+0 0 60px #00ff88;
+position:relative;
+z-index:5;
+
+}
+
+h1{
+
+text-align:center;
+color:#00ffff;
+font-size:40px;
+text-shadow:
+0 0 10px cyan,
+0 0 25px cyan;
+
+}
+
+h2{
+
+text-align:center;
+margin-top:10px;
+margin-bottom:30px;
+
+}
+
+p{
+
+margin:12px 0;
+
+}
+
+input{
+
+width:100%;
+padding:14px;
+margin-top:12px;
+background:#000;
+border:1px solid #00ff88;
+color:#00ff88;
+font-size:18px;
+
+}
+
+button{
+
+width:100%;
+padding:14px;
+margin-top:25px;
+font-size:18px;
+background:#00ff88;
+border:none;
+font-weight:bold;
+cursor:pointer;
+border-radius:6px;
+
+}
+
+button:hover{
+
+background:#00ffff;
+box-shadow:0 0 20px cyan;
+
+}
+
+.footer{
+
+margin-top:25px;
+text-align:center;
+color:#999;
+
+}
+
+.cursor{
+
+display:inline-block;
+width:10px;
+background:#00ff88;
+animation:blink .8s infinite;
+
+}
+
+@keyframes blink{
+
+50%{
+opacity:0;
+}
+
+}
+
+#error{
+
+margin-top:15px;
+color:red;
+text-align:center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+<h1>NULLSECTOR</h1>
+
+<h2>Dinesh Shinde CTF</h2>
+
+<p>> Booting Secure Terminal...</p>
+
+<p>> Loading Security Modules...</p>
+
+<p>> Authentication Required <span class="cursor"></span></p>
+
+<input
+type="text"
+id="user"
+placeholder="Username">
+
+<input
+type="password"
+id="pass"
+placeholder="Password">
+
+<button onclick="login()">
+
+LOGIN
+
+</button>
+
+<div id="error"></div>
+
+<div class="footer">
+
+Cyber Security Beginner CTF<br>
+
+Designed by <b>Dinesh Shinde</b>
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("user").value;
+
+let pass=document.getElementById("pass").value;
+
+if(user==="agent" && pass==="nullsector"){
+
+window.location.href="terminal.html";
+
+}
+else{
+
+document.getElementById("error").innerHTML=
+"Access Denied";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+NULLSECTOR - Challenge 2</title>
+
+<style>body{
+    background:#050505;
+    color:#00ff66;
+    font-family:Consolas, monospace;
+    text-align:center;
+    margin:0;
+    padding-top:100px;
+}
+
+.flag-box{
+    width:700px;
+    margin:auto;
+    background:#111;
+    border:2px solid #00ff66;
+    border-radius:10px;
+    padding:25px;
+    box-shadow:0 0 20px #00ff66;
+}
+
+h2{
+    color:#00ffff;
+    text-shadow:0 0 10px cyan;
+}
+
+.hidden-flag{
+    color:#050505;
+    font-size:10px;
+}
+
+</style>
+
+</head>
+<body>...
+
+<input type="text" id="flag" placeholder="Enter Flag">
+
+<button onclick="checkFlag()">Submit Flag</button>
+
+<p id="result"></p>
+
+<script>
+
+function checkFlag(){
+
+    var flag = document.getElementById("flag").value.trim();
+
+    if(flag === "FLAG{base64_master}"){
+
+        document.getElementById("result").innerHTML =
+if(flag === "NULLSECTOR{base64_master}"){        "<span style='color:lime;'>✔ Correct! Redirecting to Challenge 3...</span>";
+
+        setTimeout(function(){
+            window.location.href="/challenge3/";
+        },1500);
+
+    }else{
+
+        document.getElementById("result").innerHTML =
+        "<span style='color:red;'>✖ Incorrect Flag. Try Again.</span>";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html><div class="flag-box"><div class="flag-box">
+
+<h2>NULLSECTOR</h2>
+
+<h3>Challenge 2 - Base64 Decode</h3>
+
+<p>Find the hidden encoded flag.</p>
+
+<hr>
+
+<p>> Initializing NULLSECTOR...</p>
+<p>> Connecting to localhost...</p>
+<p>> Access Level: USER</p>
+<p>> Searching for hidden data...</p>
+<p style="color:yellow;">WARNING: Developer notes detected.</p>
+<p style="color:red;">Encoded string discovered.</p>
+
+<!-- Hidden Flag -->
+<!-- RkxBR3tiYXNlNjRfbWFzdGVyfQ== -->
+
+<p style="color:cyan;">
+Hint: Developers sometimes leave secrets in the page source.
+</p><br><br>
+
+<input type="text" id="flag" placeholder=<!-- TlVMTFNFQ1RPUntiYXNlNjRfbWFzdGVyfQ== -->"Enter Flag">
+
+<br><br>
+
+<button onclick="checkFlag()">Submit Flag</button>
+
+<p id="result"></p>
+
+</div> <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+
+<p><b>Mission:</b> Recover the hidden flag.</p>
+
+<p>Hint 1: 👀 Not everything is visible on the page.</p>
+
+<p>Hint 2: 🔍 Developers always leave traces.</p>
+
+<p>Hint 3: 📄 Try viewing the page source (Ctrl + U).</p>
+
+<p>Hint 4: 🧩 The hidden text uses a common encoding.</p>
+
+<p>Hint 5: 🔐 Decode the string to reveal the flag.</p>
+
+<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+
+<h2>NULLSECTOR</h2>
+
+<h3>Challenge 2 - Base64 Decode</h3>
+
+<p>Find the hidden encoded flag.</p>
+
+<!-- Hidden Flag -->
+<!-- RkxBR3tiYXNlNjRfbWFzdGVyfQ== -->
+
+<p><b>Hint:</b> Right-click → View Page Source (or press <kbd>Ctrl + U</kbd>).</p>
+
+</div>
+
+</body>
+</html>

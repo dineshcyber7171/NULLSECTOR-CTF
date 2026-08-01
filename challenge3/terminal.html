@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NULLSECTOR Terminal</title>
+
+<style>.progress-container{
+    width:100%;
+    height:20px;
+    background:#222;
+    border:1px solid #00ff88;
+    border-radius:10px;
+    margin-top:50px;
+    overflow:hidden;
+}
+
+#progress-bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00ff88,#00ffff);
+    transition:width .5s;
+}
+
+#progress-text{
+    margin-top:10px;
+    color:#00ffff;
+    font-weight:bold;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#050505;
+color:#00ff88;
+font-family:Consolas,monospace;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle,#00ff8840 1px,transparent 1px);
+background-size:35px 35px;
+animation:grid 15s linear infinite;
+opacity:.25;
+}
+
+@keyframes grid{
+from{transform:translateY(0);}
+to{transform:translateY(-35px);}
+}
+
+.terminal{
+
+width:900px;
+background:#111;
+border:2px solid #00ff88;
+border-radius:12px;
+padding:30px;
+box-shadow:
+0 0 20px #00ff88,
+0 0 60px #00ff88;
+position:relative;
+z-index:2;
+
+}
+
+h1{
+
+text-align:center;
+color:#00ffff;
+text-shadow:0 0 15px cyan;
+margin-bottom:20px;
+
+}
+
+#score{
+position:absolute;
+left:20px;
+top:20px;
+color:yellow;
+font-size:18px;
+font-weight:bold;
+}
+
+#timer{
+position:absolute;
+right:20px;
+top:20px;
+color:#ff5555;
+font-size:18px;
+font-weight:bold;
+}
+
+.line{
+margin:12px 0;
+}
+
+input{
+
+width:100%;
+padding:12px;
+margin-top:25px;
+background:#000;
+color:#00ff88;
+border:1px solid #00ff88;
+font-size:18px;
+
+}
+
+button{
+
+margin-top:15px;
+padding:12px 30px;
+background:#00ff88;
+border:none;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+border-radius:5px;
+
+}
+
+button:hover{
+
+background:#00ffff;
+
+}
+
+#message{
+
+margin-top:20px;
+font-size:20px;
+font-weight:bold;
+
+}
+
+.hidden{
+
+color:#111;
+
+}
+
+</style>
+
+</head>
+
+<body><script><hr>
+
+<h2>Interactive Terminal</h2>
+
+<div id="output">
+Welcome Agent...<br>
+Type <b>help</b> to begin.
+</div>
+
+<br>
+
+<input
+type="text"
+id="command"
+placeholder="root@nullsector:~$"
+onkeydown="if(event.key==='Enter') runCommand()">
+
+<button onclick="runCommand()">
+Execute
+</button>
+
+
+
+function runCommand(){
+
+let cmd=document.getElementById("command").value.trim().toLowerCase();
+
+let out=document.getElementById("output");
+
+switch(cmd){
+
+case "help":
+
+out.innerHTML=
+`Available Commands:<br>
+help<br>
+whoami<br>
+ls<br>
+cat flag1.txt<br>
+clear`;
+
+break;
+
+case "whoami":
+
+out.innerHTML="agent";
+
+break;
+
+case "ls":
+
+out.innerHTML=
+"flag1.txt&nbsp;&nbsp;logs&nbsp;&nbsp;config&nbsp;&nbsp;secret";
+
+break;
+
+case "cat flag1.txt":
+
+out.innerHTML=
+"<span style='color:lime;'>NULLSECTOR{terminal_access}</span>";
+
+break;
+
+case "clear":
+
+out.innerHTML="";
+
+break;
+
+default:
+
+out.innerHTML=
+"Command not found.";
+
+}
+
+document.getElementById("command").value="";
+
+}
+
+</script>
+
+<div class="terminal">
+
+<div id="score">Score : 0</div><div class="progress-container">
+    <div id="progress-bar"></div>
+</div>
+
+<p id="progress-text">Mission Progress: 0%</p>
+
+<div id="timer">15:00</div>
+
+<h1>NULLSECTOR TERMINAL</h1>
+
+<div class="line">root@nullsector:~$ whoami</div>
+<div class="line">agent</div>
+
+<div class="line">root@nullsector:~$ access</div>
+<div class="line">USER</div>
+
+<div class="line">root@nullsector:~$ mission</div>
+<div class="line">Find all 3 hidden flags.</div>
+
+<div class="line">root@nullsector:~$ hint</div>
+<div class="line">
+Inspect • View Source • Developer Tools
+</div>
+
+<!-- Flag 1 -->
+<!-- NULLSECTOR{terminal_access} -->
+
+<p class="hidden">
+NULLSECTOR{hidden_css}
+</p>
+
+<input
+id="flag"
+placeholder="Enter Flag">
+
+<button onclick="checkFlag()">
+Submit Flag
+</button>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+
+let score=0;
+
+let found=[];
+
+const flags=[
+"NULLSECTOR{terminal_access}",
+"NULLSECTOR{hidden_css}",
+"NULLSECTOR{system_breach}"
+];
+
+
+function checkFlag(){
+
+let input=document.getElementById("flag").value.trim();
+
+if(flags.includes(input) && !found.includes(input)){
+
+found.push(input);
+
+score+=100;
+
+document.getElementById("score").innerHTML="Score : "+score;
+
+document.getElementById("message").innerHTML=
+"<span style='color:lime'>Correct Flag!</span>";
+
+if(score==300){
+
+setTimeout(function(){
+
+window.location.href="access_granted.html";
+
+},1500);
+
+}
+
+}else{
+
+document.getElementById("message").innerHTML=
+"<span style='color:red'>Incorrect or Already Submitted</span>";
+
+}
+
+document.getElementById("flag").value="";
+
+}
+
+let time=900;
+
+setInterval(function(){
+
+time--;
+
+let m=Math.floor(time/60);
+
+let s=time%60;
+
+if(s<10)s="0"+s;
+
+document.getElementById("timer").innerHTML=m+":"+s;
+
+if(time<=0){
+
+alert("Mission Failed");
+
+location.reload();
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>
