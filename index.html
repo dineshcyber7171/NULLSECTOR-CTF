@@ -1,5 +1,252 @@
-<body style="background:#05070d;color:#00ff88;font-family:monospace;text-align:c enter"><h1>NULLSECTOR TERMINAL </h1>
-<h2> ACCESS RESTRICTED</h2><p>INFILRATE - EXPLOIT - CAPTURE</p><hr><p>System initialized,,,</p><p>Your Mission: Find 3 Hidden Flags.</p><h2>TARGET SYSTEMS</h2><p>[ FIREWALL ] [ DATABASE ] [ SERVER ]</p>p>[ ADIN ] [ NETWORK ] [ VAULT ] </p></body>
-<h2> MISSION CONTROL </h2>
-<p> FLAGS: 0/3 | LEVEL: 1 | SCORE: 000</p>
-<button> START MISSION</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NULLSECTOR | CTF Challenge Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #060811;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 255, 204, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 90%, rgba(121, 40, 202, 0.08) 0%, transparent 50%);
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            background: rgba(13, 18, 33, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+        }
+
+        .nav-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            text-decoration: none;
+        }
+
+        .nav-brand span {
+            color: #00ffcc;
+        }
+
+        /* Core Right Side Button Area */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 🚩 SUBMIT THE FLAG BUTTON */
+        .btn-submit-flag {
+            background: linear-gradient(135deg, #00ffcc, #0088ff);
+            color: #060811;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-submit-flag:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8);
+            background: linear-gradient(135deg, #ffffff, #00ffcc);
+        }
+
+        /* Hero Container */
+        .hero-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+        }
+
+        .hero-title span {
+            color: #00ffcc;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* Challenge Cards Grid */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .challenge-card {
+            background: rgba(13, 18, 33, 0.75);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: left;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffcc;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.25);
+        }
+
+        .challenge-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: #ffaa00;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .challenge-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .challenge-desc {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer span {
+            color: #00ffcc;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar with Core Right Action Button -->
+    <nav>
+        <a href="#" class="nav-brand">⚡ NULL<span>SECTOR</span></a>
+
+        <div class="nav-actions">
+            <!-- Right Core Action Button -->
+            <a href="score.html" class="btn-submit-flag">
+                🚩 SUBMIT THE FLAG
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Hero Area -->
+    <div class="hero-container">
+        <h1 class="hero-title">WELCOME TO <span>NULLSECTOR</span> CTF</h1>
+        <p class="hero-subtitle">
+            Hack the challenge. Learn the skill. Earn the victory. Test your cybersecurity skills across multiple interactive challenges and claim your spot at the top.
+        </p>
+
+        <!-- Challenge Quick Cards -->
+        <div class="challenges-grid">
+            <div class="challenge-card">
+                <div class="challenge-num">CHALLENGE 01</div>
+                <div class="challenge-title">Hidden Source</div>
+                <div class="challenge-desc">Inspect source code files to reveal hidden entry flags.</div>
+            </div>
+
+            <div class="challenge-card">
+                <div class="challenge-num">CHALLENGE 02</div>
+                <div class="challenge-title">Base64 Decode</div>
+                <div class="challenge-desc">Decode multi-layered cipher payloads to extract credentials.</div>
+            </div>
+
+            <div class="challenge-card">
+                <div class="challenge-num">CHALLENGE 03</div>
+                <div class="challenge-title">Command Injection</div>
+                <div class="challenge-desc">Bypass system restrictions to list and access privileged flags.</div>
+            </div>
+        </div>
+
+        <a href="score.html" class="btn-submit-flag" style="padding: 14px 32px; font-size: 1rem;">
+            ⚡ ENTER LIVE SCOREBOARD
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        👨‍💻 Designed by <span>Dinesh Shinde</span>
+    </footer>
+
+</body>
+</html>

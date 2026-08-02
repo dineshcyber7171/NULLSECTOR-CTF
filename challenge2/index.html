@@ -1,136 +1,410 @@
-<!DOCTYPE html>
-<html>
+ <!DOCTYPE html>
+<html lang="en">
 <head>
-<title>
-NULLSECTOR - Challenge 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Dinesh Shinde">
+    <title>Challenge 2 | NULLSECTOR CTF</title>
 
-<style>body{
-    background:#050505;
-    color:#00ff66;
-    font-family:Consolas, monospace;
-    text-align:center;
-    margin:0;
-    padding-top:100px;
-}
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
-.flag-box{
-    width:700px;
-    margin:auto;
-    background:#111;
-    border:2px solid #00ff66;
-    border-radius:10px;
-    padding:25px;
-    box-shadow:0 0 20px #00ff66;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-h2{
-    color:#00ffff;
-    text-shadow:0 0 10px cyan;
-}
+        body {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #030a16;
+            background-image: linear-gradient(rgba(3, 10, 22, 0.85), rgba(3, 10, 22, 0.85)), url('/images/hacker-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.hidden-flag{
-    color:#050505;
-    font-size:10px;
-}
+        .card {
+            background-color: rgba(5, 11, 20, 0.95);
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 25px #00ffcc, inset 0 0 15px rgba(0, 255, 204, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
 
-</style>
+        /* Status Header */
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
 
+        .timer-board {
+            color: #ff3333;
+            text-shadow: 0 0 8px #ff3333;
+        }
+
+        .score-board {
+            color: #ffcc00;
+        }
+
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 3rem;
+            color: #00ff88;
+            text-shadow: 0 0 15px #00ff88, 0 0 30px #00e1ff;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: #00e1ff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .terminal-log {
+            text-align: left;
+            background: #000;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            color: #00ff88;
+            line-height: 1.6;
+        }
+
+        .terminal-log .warn {
+            color: #ffcc00;
+        }
+
+        .terminal-log .alert {
+            color: #ff3333;
+        }
+
+        .challenge-box {
+            display: block;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px dashed #00ff88;
+            border-radius: 8px;
+        }
+
+        .flag-input {
+            background: #000;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 60%;
+            border-radius: 4px;
+            margin-right: 8px;
+            outline: none;
+        }
+
+        .btn-submit {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
+
+        .btn-hint {
+            background: transparent;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hint:hover {
+            background: #ffcc00;
+            color: #000;
+            box-shadow: 0 0 12px #ffcc00;
+        }
+
+        .btn-next {
+            background: transparent;
+            color: #00e1ff;
+            border: 1px solid #00e1ff;
+            padding: 8px 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next:hover {
+            background: #00e1ff;
+            color: #000;
+            box-shadow: 0 0 12px #00e1ff;
+        }
+
+        footer {
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .creator {
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .creator span {
+            color: #00ff88;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .creator span:hover {
+            color: #00e1ff;
+            text-shadow: 0 0 8px #00e1ff;
+        }
+
+        .tech {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-box {
+            background: #050b14;
+            border: 2px solid #00e1ff;
+            box-shadow: 0 0 20px #00e1ff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-box h2 {
+            font-family: 'Share Tech Mono', monospace;
+            color: #00e1ff;
+            margin-bottom: 15px;
+        }
+
+        .modal-box p {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-close {
+            background: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            font-weight: bold;
+            font-family: 'Share Tech Mono', monospace;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body>...
+<body>
 
-<input type="text" id="flag" placeholder="Enter Flag">
+    <div class="card">
+        <div class="status-header">
+            <div class="timer-board">⏱️ TIME: <span id="timer">05:00</span></div>
+            <div class="score-board">SCORE: <span id="score">100</span> PTS</div>
+        </div>
 
-<button onclick="checkFlag()">Submit Flag</button>
+        <h1>🚩 NULLSECTOR 🚩</h1>
+        <p class="subtitle">Challenge 2 - Multi-Encoding Matrix</p>
 
-<p id="result"></p>
+        <div class="terminal-log">
+            > Initializing mission timer...<br>
+            > Mission status: ACTIVE<br>
+            > Scanning page source layout...<br>
+            <span class="warn">WARNING: Encoded data packets detected in developer notes!</span><br>
+            <span class="alert">Decode any valid target flag using your terminal before time runs out.</span>
+        </div>
 
-<script>
+        <div class="challenge-box">
+            <p style="margin-bottom:10px; color:#00e1ff;">Enter captured flag below:</p>
+            <input type="text" id="flagInput" class="flag-input" placeholder="NULLSECTOR{...}">
+            <button class="btn-submit" onclick="submitFlag()">SUBMIT</button>
+            <p id="msg" style="margin-top:10px; font-weight:bold;"></p>
+        </div>
 
-function checkFlag(){
+        <div class="action-bar">
+            <button class="btn-hint" onclick="showHint1()">💡 HINT 1</button>
+            <button class="btn-hint" style="color:#ff6600; border-color:#ff6600;" onclick="showHint2()">🔥 HINT 2 (-20 PTS)</button>
+            <a href="../challenge3/index.html" class="btn-next">NEXT ➔</a>
+        </div>
 
-    var flag = document.getElementById("flag").value.trim();
+        <footer>
+            <p class="creator">Designed by <span onclick="openModal()">Dinesh Shinde</span></p>
+            <p class="tech">HTML • CSS • JavaScript • Apache • Kali Linux</p>
+        </footer>
+    </div>
 
-    if(flag === "FLAG{base64_master}"){
+    <!-- Modal -->
+    <div id="designerModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>DEVELOPER PROFILE</h2>
+            <p><strong>Name:</strong> Dinesh Shinde<br>
+            <strong>Role:</strong> Lead CTF Architect & Security Developer<br>
+            <strong>System:</strong> NULLSECTOR Infrastructure</p>
+            <button class="btn-close" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
 
-        document.getElementById("result").innerHTML =
-if(flag === "NULLSECTOR{base64_master}"){        "<span style='color:lime;'>✔ Correct! Redirecting to Challenge 3...</span>";
+    <!-- 
+    ===================================================
+    NULLSECTOR ENCRYPTED DATA VAULT (INTERNAL NOTES)
 
-        setTimeout(function(){
-            window.location.href="/challenge3/";
-        },1500);
+    [PACKET 1 - HEX]
+    4e554c4c534543544f527b6865785f6465636f64655f6d61737465727d
 
-    }else{
+    [PACKET 2 - ROT13]
+    AHYYFRPGBE{ebg13_pvcure_fbyirq}
 
-        document.getElementById("result").innerHTML =
-        "<span style='color:red;'>✖ Incorrect Flag. Try Again.</span>";
+    [PACKET 3 - BINARY]
+    01001110 01010101 01001100 01001100 01010011 01000101 01000011 01010100 01001111 01010010 01111011 01100010 01101001 01101110 01100001 01110010 01111001 01011111 01110011 01110100 01110010 01101001 01101110 01100111 01111101
 
-    }
+    [PACKET 4 - DOUBLE BASE64]
+    Vk14U1IwcFZVbEpQVmtwc11WRlplR1ExYm01MFdsa3dSQT09
 
-}
+    [PACKET 5 - BASE64 IN HEX]
+    546c564d54454e4651315250556e746959584e6c4e6a52666257467a6447567966513d3d
 
-</script>
+    Instructions: Open terminal and decode any packet to extract the flag!
+    ===================================================
+    -->
 
-</body>
-</html><div class="flag-box"><div class="flag-box">
+    <script>
+        let score = 100;
+        let hint2Used = false;
+        let timeLeft = 300; // 5 Minutes Timer
+        let timerInterval;
 
-<h2>NULLSECTOR</h2>
+        // Valid Flags Array
+        const validFlags = [
+            "NULLSECTOR{hex_decode_master}",
+            "NULLSECTOR{rot13_cipher_solved}",
+            "NULLSECTOR{binary_string}",
+            "NULLSECTOR{double_base64_bypass}",
+            "NULLSECTOR{base64_master}"
+        ];
 
-<h3>Challenge 2 - Base64 Decode</h3>
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').innerText = "EXPIRED";
+                    document.getElementById('msg').style.color = "#ff3333";
+                    document.getElementById('msg').innerText = "MISSION FAILED! Time limit reached.";
+                } else {
+                    timeLeft--;
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    document.getElementById('timer').innerText = 
+                        (minutes < 10 ? "0" : "") + minutes + ":" + 
+                        (seconds < 10 ? "0" : "") + seconds;
+                }
+            }, 1000);
+        }
 
-<p>Find the hidden encoded flag.</p>
+        window.onload = startTimer;
 
-<hr>
+        function showHint1() {
+            alert("💡 HINT 1: Right-Click -> View Page Source (Ctrl+U) to find the encrypted data vault containing 5 different encoded packets.");
+        }
 
-<p>> Initializing NULLSECTOR...</p>
-<p>> Connecting to localhost...</p>
-<p>> Access Level: USER</p>
-<p>> Searching for hidden data...</p>
-<p style="color:yellow;">WARNING: Developer notes detected.</p>
-<p style="color:red;">Encoded string discovered.</p>
+        function showHint2() {
+            if (!hint2Used) {
+                score -= 20;
+                hint2Used = true;
+                document.getElementById('score').innerText = score;
+                alert("🔥 HINT 2 (-20 Points deducted):\n- Packet 1: Hex -> 'echo \"...\" | xxd -r -p'\n- Packet 2: ROT13 -> 'echo \"...\" | tr 'A-Za-z' 'N-ZA-Mn-za-m'\n- Packet 4: Double Base64 -> 'echo \"...\" | base64 -d | base64 -d'");
+            } else {
+                alert("🔥 HINT 2:\n- Packet 1: Hex -> 'echo \"...\" | xxd -r -p'\n- Packet 2: ROT13 -> 'echo \"...\" | tr 'A-Za-z' 'N-ZA-Mn-za-m'\n- Packet 4: Double Base64 -> 'echo \"...\" | base64 -d | base64 -d'");
+            }
+        }
 
-<!-- Hidden Flag -->
-<!-- RkxBR3tiYXNlNjRfbWFzdGVyfQ== -->
+        function submitFlag() {
+            const input = document.getElementById('flagInput').value.trim();
+            const msg = document.getElementById('msg');
+            
+            if (validFlags.includes(input)) {
+                clearInterval(timerInterval);
+                msg.style.color = "#00ff88";
+                msg.innerText = "ACCESS GRANTED! Final Score: " + score + " PTS. Proceed to Challenge 3.";
+            } else {
+                msg.style.color = "#ff3333";
+                msg.innerText = "ACCESS DENIED! Incorrect Flag.";
+            }
+        }
 
-<p style="color:cyan;">
-Hint: Developers sometimes leave secrets in the page source.
-</p><br><br>
+        function openModal() {
+            document.getElementById('designerModal').style.display = 'flex';
+        }
 
-<input type="text" id="flag" placeholder=<!-- TlVMTFNFQ1RPUntiYXNlNjRfbWFzdGVyfQ== -->"Enter Flag">
-
-<br><br>
-
-<button onclick="checkFlag()">Submit Flag</button>
-
-<p id="result"></p>
-
-</div> <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-
-<p><b>Mission:</b> Recover the hidden flag.</p>
-
-<p>Hint 1: 👀 Not everything is visible on the page.</p>
-
-<p>Hint 2: 🔍 Developers always leave traces.</p>
-
-<p>Hint 3: 📄 Try viewing the page source (Ctrl + U).</p>
-
-<p>Hint 4: 🧩 The hidden text uses a common encoding.</p>
-
-<p>Hint 5: 🔐 Decode the string to reveal the flag.</p>
-
-<p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-
-<h2>NULLSECTOR</h2>
-
-<h3>Challenge 2 - Base64 Decode</h3>
-
-<p>Find the hidden encoded flag.</p>
-
-<!-- Hidden Flag -->
-<!-- RkxBR3tiYXNlNjRfbWFzdGVyfQ== -->
-
-<p><b>Hint:</b> Right-click → View Page Source (or press <kbd>Ctrl + U</kbd>).</p>
-
-</div>
-
+        function closeModal() {
+            document.getElementById('designerModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

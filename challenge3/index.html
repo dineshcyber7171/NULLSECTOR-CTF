@@ -1,198 +1,433 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NULLSECTOR | Challenge 3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Dinesh Shinde">
+    <title>Challenge 3 | NULLSECTOR CTF</title>
 
-<style>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-background:#050505;
-font-family:Consolas,monospace;
-color:#00ff88;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-}
+        body {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #0d0205;
+            background-image: linear-gradient(rgba(13, 2, 5, 0.9), rgba(13, 2, 5, 0.9)), url('/images/hacker-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle,#00ff8840 1px,transparent 1px);
-background-size:40px 40px;
-opacity:.2;
-animation:move 15s linear infinite;
-}
+        .card {
+            background-color: rgba(20, 5, 10, 0.95);
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.5), inset 0 0 15px rgba(255, 0, 85, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
 
-@keyframes move{
-from{transform:translateY(0);}
-to{transform:translateY(-40px);}
-}
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
 
-.terminal{
+        .timer-board {
+            color: #ff3333;
+            text-shadow: 0 0 8px #ff3333;
+        }
 
-width:900px;
-background:#111;
-border:2px solid #00ff88;
-border-radius:12px;
-padding:35px;
-box-shadow:0 0 20px #00ff88,
-0 0 50px #00ff88;
-position:relative;
-z-index:2;
+        .score-board {
+            color: #ffaa00;
+            text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+        }
 
-}
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.8rem;
+            color: #ff0055;
+            text-shadow: 0 0 15px #ff0055, 0 0 30px #ff6600;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
 
-.header{
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: #ffaa00;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
 
-text-align:center;
-margin-bottom:30px;
+        .terminal-log {
+            text-align: left;
+            background: #000;
+            border: 1px solid rgba(255, 0, 85, 0.4);
+            border-radius: 6px;
+            padding: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            color: #ffaa00;
+            line-height: 1.6;
+        }
 
-}
+        .terminal-log .warn {
+            color: #ff6600;
+        }
 
-.header h1{
+        .terminal-log .alert {
+            color: #ff3333;
+        }
 
-font-size:48px;
-color:#00ffff;
-text-shadow:0 0 10px cyan,
-0 0 20px cyan,
-0 0 40px cyan;
+        .btn-main {
+            display: inline-block;
+            background-color: #ff0055;
+            color: #ffffff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff0055;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
 
-}
+        .btn-main:hover {
+            background-color: #ff6600;
+            box-shadow: 0 0 25px #ff6600;
+            transform: scale(1.03);
+        }
 
-.header h2{
+        .challenge-box {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 0, 85, 0.05);
+            border: 1px dashed #ff0055;
+            border-radius: 8px;
+        }
 
-margin-top:10px;
-color:#00ff88;
+        .flag-input {
+            background: #000;
+            border: 1px solid #ff0055;
+            color: #ffaa00;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 60%;
+            border-radius: 4px;
+            margin-right: 8px;
+            outline: none;
+        }
 
-}
+        .btn-submit {
+            background: #ff0055;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
 
-.line{
+        .btn-submit:hover {
+            background: #ff6600;
+        }
 
-margin:10px 0;
-font-size:20px;
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
 
-}
+        .btn-hint {
+            background: transparent;
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.cursor{
+        .btn-hint:hover {
+            background: #ffaa00;
+            color: #000;
+            box-shadow: 0 0 12px #ffaa00;
+        }
 
-display:inline-block;
-width:10px;
-background:#00ff88;
-animation:blink .8s infinite;
+        /* Final Round Badge */
+        .final-badge {
+            background: rgba(255, 102, 0, 0.2);
+            color: #ff6600;
+            border: 1px solid #ff6600;
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+            user-select: none;
+        }
 
-}
+        footer {
+            border-top: 1px solid rgba(255, 0, 85, 0.3);
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
 
-@keyframes blink{
+        .creator {
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
 
-50%{
-opacity:0;
-}
+        .creator span {
+            color: #ff0055;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
 
-}
+        .creator span:hover {
+            color: #ffaa00;
+            text-shadow: 0 0 8px #ffaa00;
+        }
 
-.start{
+        .tech {
+            color: #888;
+            font-size: 0.85rem;
+        }
 
-margin-top:30px;
-text-align:center;
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
 
-}
+        .modal-box {
+            background: #14050a;
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 20px #ff0055;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
 
-button{
+        .modal-box h2 {
+            font-family: 'Share Tech Mono', monospace;
+            color: #ff0055;
+            margin-bottom: 15px;
+        }
 
-padding:15px 45px;
-font-size:18px;
-background:#00ff88;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-transition:.3s;
+        .modal-box p {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
 
-}
-
-button:hover{
-
-background:#00ffff;
-transform:scale(1.08);
-box-shadow:0 0 20px cyan;
-
-}
-
-.footer{
-
-margin-top:30px;
-text-align:center;
-color:#999;
-
-}
-
-</style>
-
+        .btn-close {
+            background: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            font-weight: bold;
+            font-family: 'Share Tech Mono', monospace;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
+<body>
 
-<body> <script>
+    <div class="card">
+        <div class="status-header">
+            <div class="timer-board">⏱️ TIME: <span id="timer">05:00</span></div>
+            <div class="score-board">SCORE: <span id="score">100</span> PTS</div>
+        </div>
 
-function startMission(){
+        <h1>WELCOME TO DINESH SHINDE CTF</h1>
+        <p class="subtitle">Challenge 3 - Linux Directory Discovery</p>
 
-window.location.href="terminal.html";
+        <div class="terminal-log" id="termLog">
+            > Booting Secure Shell Environment...<br>
+            > Establishing Encrypted Link...<br>
+            > Authentication : GRANTED<br>
+            > Agent Access Level : USER<br>
+            > Mission : Discover hidden server file paths<br>
+            > Status : <span style="color:#ffaa00;">READY</span>
+        </div>
 
-}
+        <!-- Start Mission Button -->
+        <button id="startBtn" class="btn-main" onclick="startMission()">START MISSION</button>
 
-</script>
+        <!-- Hidden Challenge Input Area -->
+        <div id="challengeArea" class="challenge-box">
+            <p style="margin-bottom:10px; color:#ffaa00;">Enter captured flag below:</p>
+            <input type="text" id="flagInput" class="flag-input" placeholder="NULLSECTOR{...}">
+            <button class="btn-submit" onclick="submitFlag()">SUBMIT</button>
+            <p id="msg" style="margin-top:10px; font-weight:bold;"></p>
+        </div>
 
-<div class="terminal">
+        <div class="action-bar">
+            <div>
+                <button class="btn-hint" onclick="showHint1()">💡 HINT 1</button>
+                <button class="btn-hint" style="color:#ff6600; border-color:#ff6600;" onclick="showHint2()">🔥 HINT 2 (-20 PTS)</button>
+            </div>
+            
+            <!-- Final Round Badge -->
+            <div class="final-badge">🏆 FINAL ROUND</div>
+        </div>
 
-<div class="header">
+        <footer>
+            <p class="creator">Designed by <span onclick="openModal()">Dinesh Shinde</span></p>
+            <p class="tech">HTML • CSS • JavaScript • Apache • Kali Linux</p>
+        </footer>
+    </div>
 
-<h1>WELCOME TO</h1>
+    <!-- Developer Modal -->
+    <div id="designerModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>DEVELOPER PROFILE</h2>
+            <p><strong>Name:</strong> Dinesh Shinde<br>
+            <strong>Role:</strong> Lead CTF Architect & Security Developer<br>
+            <strong>System:</strong> NULLSECTOR Infrastructure</p>
+            <button class="btn-close" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
 
-<h1>DINESH SHINDE CTF</h1>
+    <!-- 
+    ===================================================
+    Developer Notes (Internal Server Logs)
 
-<h2>NULLSECTOR</h2>
+    SERVER PATH CONFIRMATION:
+    Current Working Directory: /var/www/html/challenge3
+    Hidden File Located: /var/www/html/challenge3/.secret_flag.txt
 
-</div>
+    FLAG 3:
+    NULLSECTOR{linux_pwd_ls_master}
+    ===================================================
+    -->
 
-<div class="line">> Booting Secure Terminal...</div>
+    <script>
+        let score = 100;
+        let hint2Used = false;
+        let timeLeft = 300; // 5 Minutes Timer
+        let timerInterval;
+        let missionStarted = false;
 
-<div class="line">> Establishing Encrypted Connection...</div>
+        function startMission() {
+            if (missionStarted) return;
+            missionStarted = true;
 
-<div class="line">> Authentication Successful.</div>
+            // Trigger Browser Alert Prompt
+            alert("Challenge 3 Starting Next...");
 
-<div class="line">> Agent Access Level : USER</div>
+            // Hide Start Button & Display Input Area
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('challengeArea').style.display = 'block';
 
-<div class="line">> Mission : Recover 3 Hidden Flags</div>
+            // Update Logs
+            document.getElementById('termLog').innerHTML += `<br><span class="warn">> WARNING: Server directory structure exposed!</span><br><span class="alert">> Locate hidden secret file on local Apache path.</span>`;
 
-<div class="line">> Status : READY <span class="cursor"></span></div>
+            // Start Countdown Timer
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').innerText = "EXPIRED";
+                    document.getElementById('msg').style.color = "#ff3333";
+                    document.getElementById('msg').innerText = "MISSION FAILED! Time limit reached.";
+                } else {
+                    timeLeft--;
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    document.getElementById('timer').innerText = 
+                        (minutes < 10 ? "0" : "") + minutes + ":" + 
+                        (seconds < 10 ? "0" : "") + seconds;
+                }
+            }, 1000);
+        }
 
-<div class="start">
+        function showHint1() {
+            alert("💡 HINT 1: Use Linux terminal commands like 'pwd' (print working directory) and 'ls -la' (list all hidden files) to inspect your web server path.");
+        }
 
-<button onclick="alert('Challenge 3 Coming Next...')">
-START MISSION
-</button>
+        function showHint2() {
+            if (!hint2Used) {
+                score -= 20;
+                hint2Used = true;
+                document.getElementById('score').innerText = score;
+            }
+            alert("🔥 HINT 2 (-20 PTS): In Kali Linux terminal, run:\ncd /var/www/html/challenge3\nls -la\ncat .secret_flag.txt\nOR check the developer notes in View Page Source (Ctrl + U)!");
+        }
 
-</div>
+        function submitFlag() {
+            const input = document.getElementById('flagInput').value.trim();
+            const msg = document.getElementById('msg');
+            
+            if (input === "NULLSECTOR{linux_pwd_ls_master}") {
+                clearInterval(timerInterval);
+                msg.style.color = "#ffaa00";
+                msg.innerText = "🏆 CONGRATULATIONS! You have completed the CTF! Final Score: " + score + " PTS.";
+            } else {
+                msg.style.color = "#ff3333";
+                msg.innerText = "ACCESS DENIED! Incorrect Flag.";
+            }
+        }
 
-<div class="footer">
+        function openModal() {
+            document.getElementById('designerModal').style.display = 'flex';
+        }
 
-Designed by <b>Dinesh Shinde</b><br>
-NULLSECTOR Beginner CTF
-
-</div>
-
-</div>
-
+        function closeModal() {
+            document.getElementById('designerModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>

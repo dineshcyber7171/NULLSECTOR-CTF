@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NULLSECTOR | Command Scoreboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #060811;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 255, 204, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 85% 90%, rgba(121, 40, 202, 0.08) 0%, transparent 50%);
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Outer Container */
+        .container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* Header Layout */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        .brand-title span {
+            color: #00ffcc;
+        }
+
+        .brand-subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: #00ffcc;
+            letter-spacing: 6px;
+            margin-top: 5px;
+            opacity: 0.85;
+        }
+
+        /* Stats Grid Header */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 18px 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        /* Main Glass Card */
+        .main-card {
+            background: rgba(13, 18, 33, 0.75);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            border-radius: 20px;
+            padding: 35px 30px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 255, 204, 0.05);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 25px;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ffcc, #0099ff, #ff007f);
+            box-shadow: 0 0 12px #00ffcc;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Submit Form */
+        .submit-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .flag-input {
+            flex: 1;
+            background: rgba(6, 11, 25, 0.9);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            color: #00ffcc;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .flag-input:focus {
+            border-color: #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.25);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #00ffcc, #0088ff);
+            color: #060811;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.6);
+            background: linear-gradient(135deg, #ffffff, #00ffcc);
+        }
+
+        #statusMsg {
+            font-size: 0.9rem;
+            min-height: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Flag Cards */
+        .flag-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .flag-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            padding: 18px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .flag-card:hover {
+            transform: translateX(4px);
+            border-color: rgba(0, 255, 204, 0.4);
+        }
+
+        .flag-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .flag-icon {
+            font-size: 1.3rem;
+        }
+
+        .flag-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .flag-1 { color: #00ffcc; }
+        .flag-2 { color: #ffaa00; }
+        .flag-3 { color: #ff007f; }
+
+        .flag-pts {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-left: 10px;
+        }
+
+        .badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .badge.locked {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #64748b;
+        }
+
+        .badge.unlocked {
+            background: rgba(0, 255, 204, 0.15);
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        footer span {
+            color: #00ffcc;
+            font-weight: 700;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.92);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            backdrop-filter: blur(12px);
+        }
+
+        .congrats-card {
+            background: rgba(13, 18, 33, 0.98);
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            padding: 35px 30px;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.4);
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .mission-header {
+            font-family: 'Orbitron', sans-serif;
+            color: #ffaa00;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+        }
+
+        .mission-body {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+            text-align: left;
+            margin-bottom: 20px;
+            background: rgba(6, 11, 25, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .mission-quote {
+            border-left: 3px solid #00ffcc;
+            padding-left: 12px;
+            margin: 14px 0;
+            font-style: italic;
+            color: #00ffcc;
+            background: rgba(0, 255, 204, 0.05);
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        .btn-modal {
+            background: linear-gradient(135deg, #00ffcc, #0088ff);
+            color: #060811;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-modal:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand-title">⚡ NULL<span>SECTOR</span> ⚡</div>
+            <div class="brand-subtitle">LIVE COMMAND CTF SCOREBOARD</div>
+        </header>
+
+        <!-- Stats Overview Bar -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Score</div>
+                <div class="stat-value"><span id="scoreVal">0</span> <span style="font-size: 1rem; color: #64748b;">PTS</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Flags Unlocked</div>
+                <div class="stat-value"><span id="flagsVal">0</span> / 3</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Agent Rank</div>
+                <div class="stat-value" id="rankVal" style="color: #ffaa00;">NOVICE</div>
+            </div>
+        </div>
+
+        <!-- Main Scoreboard Card -->
+        <div class="main-card">
+            
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-labels">
+                    <span>MISSION PROGRESS</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <input type="text" id="flagInput" class="flag-input" placeholder="Enter flag: NULLSECTOR{...}">
+                <button class="btn-submit" onclick="submitFlag()">SUBMIT</button>
+            </div>
+            <div id="statusMsg"></div>
+
+            <!-- Flag List -->
+            <div class="flag-list">
+                <div class="flag-card">
+                    <div class="flag-info">
+                        <span class="flag-icon">🚩</span>
+                        <div>
+                            <span class="flag-title flag-1">FLAG 1</span>
+                            <span class="flag-pts">100 PTS</span>
+                        </div>
+                    </div>
+                    <span class="badge locked" id="badge-flag1">🔒 LOCKED</span>
+                </div>
+
+                <div class="flag-card">
+                    <div class="flag-info">
+                        <span class="flag-icon">🚩</span>
+                        <div>
+                            <span class="flag-title flag-2">FLAG 2</span>
+                            <span class="flag-pts">200 PTS</span>
+                        </div>
+                    </div>
+                    <span class="badge locked" id="badge-flag2">🔒 LOCKED</span>
+                </div>
+
+                <div class="flag-card">
+                    <div class="flag-info">
+                        <span class="flag-icon">🚩</span>
+                        <div>
+                            <span class="flag-title flag-3">FLAG 3</span>
+                            <span class="flag-pts">300 PTS</span>
+                        </div>
+                    </div>
+                    <span class="badge locked" id="badge-flag3">🔒 LOCKED</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            👨‍💻 Designed by <span>Dinesh Shinde</span>
+        </footer>
+    </div>
+
+    <!-- Completion Modal -->
+    <div id="congratsModal" class="modal-overlay">
+        <div class="congrats-card">
+            <div class="mission-header">🎉 MISSION COMPLETE! 🎉</div>
+            
+            <div class="mission-body">
+                <p style="color: #00ffcc; font-family:'Orbitron'; margin-bottom: 10px;">⚡ Congratulations, Operator!</p>
+                <p>You have successfully completed <b>Challenge 3</b> and proven your cybersecurity skills.</p>
+                <br>
+                <p>🚩 Every flag captured.</p>
+                <p>🖥️ Every challenge conquered.</p>
+                <p>🔓 Access granted to the next level.</p>
+                <br>
+                <p><b>Welcome to the elite.</b></p>
+                <p><b style="color: #00ffcc;">NULLSECTOR</b> salutes your determination.</p>
+
+                <div class="mission-quote">
+                    "Hack the challenge. Learn the skill. Earn the victory."
+                </div>
+
+                <p style="color: #00ff66; font-family:'Orbitron'; font-weight: bold; text-align: center; margin-top: 10px;">
+                    🏆 Status: ACCESS GRANTED ✅
+                </p>
+            </div>
+
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px;">
+                Designed by <span style="color: #00ffcc; font-weight: bold;">Dinesh Shinde</span>
+            </p>
+
+            <button class="btn-modal" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+        let unlockedFlags = new Set();
+        const TOTAL_FLAGS = 3;
+
+        const validFlags = {
+            "NULLSECTOR{source_code_master}": { id: "flag1", pts: 100 },
+            "NULLSECTOR{base64_master}": { id: "flag2", pts: 200 },
+            "NULLSECTOR{double_base64_bypass}": { id: "flag2", pts: 200 },
+            "NULLSECTOR{linux_pwd_ls_master}": { id: "flag3", pts: 300 }
+        };
+
+        function submitFlag() {
+            const inputField = document.getElementById('flagInput');
+            const flag = inputField.value.trim();
+            const msg = document.getElementById('statusMsg');
+
+            if (!flag) {
+                msg.style.color = "#ef4444";
+                msg.innerText = "⚠️ Please enter a flag first!";
+                return;
+            }
+
+            if (validFlags[flag]) {
+                const flagData = validFlags[flag];
+
+                if (unlockedFlags.has(flagData.id)) {
+                    msg.style.color = "#f59e0b";
+                    msg.innerText = "⚠️ You have already claimed this flag!";
+                } else {
+                    unlockedFlags.add(flagData.id);
+                    currentScore += flagData.pts;
+
+                    // Update UI Stats
+                    document.getElementById('scoreVal').innerText = currentScore;
+                    document.getElementById('flagsVal').innerText = unlockedFlags.size;
+
+                    // Rank Progression
+                    if (unlockedFlags.size === 1) document.getElementById('rankVal').innerText = "AGENT";
+                    if (unlockedFlags.size === 2) document.getElementById('rankVal').innerText = "ELITE";
+                    if (unlockedFlags.size === 3) document.getElementById('rankVal').innerText = "MASTER";
+
+                    // Progress Bar Fill
+                    const pct = Math.round((unlockedFlags.size / TOTAL_FLAGS) * 100);
+                    document.getElementById('progressFill').style.width = pct + "%";
+                    document.getElementById('progressText').innerText = pct + "%";
+
+                    // Update Badge
+                    const badge = document.getElementById(`badge-${flagData.id}`);
+                    badge.classList.remove('locked');
+                    badge.classList.add('unlocked');
+                    badge.innerHTML = "⚡ UNLOCKED";
+
+                    msg.style.color = "#10b981";
+                    msg.innerText = `🎉 SUCCESS! +${flagData.pts} Points Added!`;
+                    inputField.value = "";
+
+                    if (unlockedFlags.size === TOTAL_FLAGS) {
+                        setTimeout(() => {
+                            document.getElementById('congratsModal').style.display = 'flex';
+                        }, 500);
+                    }
+                }
+            } else {
+                msg.style.color = "#ef4444";
+                msg.innerText = "❌ INVALID FLAG! Check your input and try again.";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('congratsModal').style.display = 'none';
+        }
+
+        document.getElementById("flagInput").addEventListener("keyup", function(e) {
+            if (e.key === "Enter") submitFlag();
+        });
+    </script>
+</body>
+</html>

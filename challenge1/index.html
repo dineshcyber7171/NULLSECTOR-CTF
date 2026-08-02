@@ -1,131 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NULLSECTOR CTF</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Dinesh Shinde">
+    <title>Challenge 1 | NULLSECTOR CTF</title>
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    <!-- Hacker Terminal Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
-body{
-font-family:Consolas,monospace;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(-45deg,#000000,#001f3f,#004d40,#4b0082);
-background-size:400% 400%;
-animation:bg 12s ease infinite;
-overflow:hidden;
-}
+    <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-@keyframes bg{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
+   body {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    background-color: #030a16;
+    
+    /* Local background image with dark overlay for clear text */
+    background-image: linear-gradient(rgba(3, 10, 22, 0.85), rgba(3, 10, 22, 0.85)), url('hacker-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 
-.card{
-width:900px;
-padding:50px;
-background:rgba(0,0,0,.82);
-border:2px solid #00ffff;
-border-radius:15px;
-text-align:center;
-box-shadow:0 0 25px cyan,0 0 60px #00ff88;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 
-h1{
-font-size:60px;
-color:#00ffff;
-text-shadow:0 0 20px cyan;
-margin-bottom:20px;
-}
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #030a16;
+            color: #00ff88;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-h2{
-color:#00ff88;
-margin-bottom:25px;
-}
+        /* Glowing Card Container */
+        .card {
+            background-color: #050b14;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 25px #00ffcc, inset 0 0 15px rgba(0, 255, 204, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
 
-p{
-font-size:22px;
-color:#ffffff;
-line-height:1.8;
-}
+        /* Score Display Header */
+        .score-board {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            color: #ffcc00;
+            text-align: right;
+            margin-bottom: 10px;
+        }
 
-.btn{
-display:inline-block;
-margin-top:35px;
-padding:16px 45px;
-background:#00ff88;
-color:#000;
-font-size:22px;
-font-weight:bold;
-text-decoration:none;
-border-radius:10px;
-transition:.3s;
-}
+        /* Hacker Font Title */
+        h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 3.2rem;
+            color: #00ff88;
+            text-shadow: 0 0 15px #00ff88, 0 0 30px #00e1ff;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
 
-.btn:hover{
-background:#00ffff;
-transform:scale(1.08);
-box-shadow:0 0 20px cyan;
-}
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.3rem;
+            color: #00e1ff;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
 
-.footer{
-margin-top:40px;
-font-size:18px;
-color:#cccccc;
-}
+        p.description {
+            color: #ffffff;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
 
-.footer span{
-color:#00ffff;
-font-weight:bold;
-}
-</style>
+        /* Flag Submission Box */
+        .challenge-box {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px dashed #00ff88;
+            border-radius: 8px;
+        }
 
+        .flag-input {
+            background: #000;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            width: 60%;
+            border-radius: 4px;
+            margin-right: 8px;
+            outline: none;
+        }
+
+        .btn-submit {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Primary Action Button */
+        .btn-main {
+            display: inline-block;
+            background-color: #00ff88;
+            color: #000000;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 0 12px #00ff88;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .btn-main:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 22px #ffffff;
+            transform: scale(1.03);
+        }
+
+        /* Control Panel for Hint and Next Buttons */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
+
+        .btn-hint {
+            background: transparent;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hint:hover {
+            background: #ffcc00;
+            color: #000;
+            box-shadow: 0 0 12px #ffcc00;
+        }
+
+        .btn-next {
+            background: transparent;
+            color: #00e1ff;
+            border: 1px solid #00e1ff;
+            padding: 8px 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next:hover {
+            background: #00e1ff;
+            color: #000;
+            box-shadow: 0 0 12px #00e1ff;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .creator {
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .creator span {
+            color: #00ff88;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .creator span:hover {
+            color: #00e1ff;
+            text-shadow: 0 0 8px #00e1ff;
+        }
+
+        .tech {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* Modal / Popup Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-box {
+            background: #050b14;
+            border: 2px solid #00e1ff;
+            box-shadow: 0 0 20px #00e1ff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-box h2 {
+            font-family: 'Share Tech Mono', monospace;
+            color: #00e1ff;
+            margin-bottom: 15px;
+        }
+
+        .modal-box p {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-close {
+            background: #ff3333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            font-weight: bold;
+            font-family: 'Share Tech Mono', monospace;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-close:hover {
+            background: #ff6666;
+            box-shadow: 0 0 10px #ff3333;
+        }
+    </style>
 </head>
+<body>
 
-<body> 
-<!-- ===================================================
-Developer Notes (Internal)
+    <div class="card">
+        <div class="score-board">SCORE: <span id="score">100</span> PTS</div>
 
-FLAG 1:
-NULLSECTOR{view_source_master}
+        <h1>🚩 NULLSECTOR 🚩</h1>
+        <p class="subtitle">Cyber Security Beginner CTF</p>
 
-Do not remove this comment.
-=================================================== -->
+        <p class="description">
+            Welcome Agent.<br>
+            Your objective is to inspect this page, capture the hidden flag, and proceed to Challenge 2.
+        </p>
 
-<div class="card">
+        <button class="btn-main" onclick="openChallenge()">▶ START CHALLENGE</button>
 
-<h1>🚩 NULLSECTOR 🚩</h1>
+        <!-- Hidden Flag Submission Area -->
+        <div id="challengeArea" class="challenge-box">
+            <p style="margin-bottom:10px; color:#00e1ff;">Enter captured flag below:</p>
+            <input type="text" id="flagInput" class="flag-input" placeholder="NULLSECTOR{...}">
+            <button class="btn-submit" onclick="submitFlag()">SUBMIT</button>
+            <p id="msg" style="margin-top:10px; font-weight:bold;"></p>
+        </div>
 
-<h2>Cyber Security Beginner CTF</h2>
+        <!-- Action Bar: Hint 1, Hint 2, Next Challenge -->
+        <div class="action-bar">
+            <button class="btn-hint" onclick="showHint1()">💡 HINT 1</button>
+            <button class="btn-hint" style="color:#ff6600; border-color:#ff6600;" onclick="showHint2()">🔥 HINT 2 (-20 PTS)</button>
+            <a href="../challenge2/index.html" class="btn-next">NEXT ➔</a>
+        </div>
 
-<p>
-Welcome Agent.
-</p>
+        <footer>
+            <p class="creator">Designed by <span onclick="openModal()">Dinesh Shinde</span></p>
+            <p class="tech">HTML • CSS • JavaScript • Apache • Kali Linux</p>
+        </footer>
+    </div>
 
-<p>
-Your objective is to solve each challenge, capture every hidden flag,
-and unlock the final ACCESS GRANTED page.
-</p>
+    <!-- Designer Profile Popup Modal -->
+    <div id="designerModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>DEVELOPER PROFILE</h2>
+            <p><strong>Name:</strong> Dinesh Shinde<br>
+            <strong>Role:</strong> Lead CTF Architect & Security Developer<br>
+            <strong>System:</strong> NULLSECTOR Infrastructure</p>
+            <button class="btn-close" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
 
-<a class="btn" href="challenge1/index.html">
-▶ START CHALLENGE
-</a>
+    <!-- 
+    ===================================================
+    Developer Notes (Internal)
 
-<div class="footer">
-Designed by <span>Dinesh Shinde</span><br><br>
-HTML • CSS • JavaScript • Apache • Kali Linux
-</div>
+    FLAG 1:
+    NULLSECTOR{view_source_master}
 
-</div>
+    Do not remove this comment.
+    ===================================================
+    -->
 
+    <script>
+        let score = 100;
+        let hint2Used = false;
+
+        function openChallenge() {
+            document.getElementById('challengeArea').style.display = 'block';
+        }
+
+        function showHint1() {
+            alert("💡 HINT 1: Inspect the underlying source code layout.");
+        }
+
+        function showHint2() {
+            if (!hint2Used) {
+                score -= 20;
+                hint2Used = true;
+                document.getElementById('score').innerText = score;
+                alert("🔥 HINT 2 (-20 Points deducted): Press Ctrl+U (or Right-Click -> View Page Source) and check the developer notes in the HTML comments at the bottom!");
+            } else {
+                alert("🔥 HINT 2: Press Ctrl+U (or Right-Click -> View Page Source) and check the developer notes in the HTML comments at the bottom!");
+            }
+        }
+
+        function submitFlag() {
+            const input = document.getElementById('flagInput').value.trim();
+            const msg = document.getElementById('msg');
+            if (input === "NULLSECTOR{view_source_master}") {
+                msg.style.color = "#00ff88";
+                msg.innerText = "ACCESS GRANTED! Final Score: " + score + " PTS. Proceed to Next Challenge.";
+            } else {
+                msg.style.color = "#ff3333";
+                msg.innerText = "ACCESS DENIED! Incorrect Flag.";
+            }
+        }
+
+        /* Modal Functions */
+        function openModal() {
+            document.getElementById('designerModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('designerModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
