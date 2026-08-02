@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NULLSECTOR | CTF Challenge Platform</title>
+    <title>NULLSECTOR CTF | Command Center</title>
 
-    <!-- Google Fonts -->
+    <!-- Cyberpunk Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -19,25 +19,33 @@
 
         body {
             background-color: #060811;
+            /* Using requested hacker background with fallback gradients */
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 255, 204, 0.12) 0%, transparent 60%),
-                radial-gradient(circle at 85% 90%, rgba(121, 40, 202, 0.08) 0%, transparent 50%);
+                linear-gradient(rgba(6, 8, 17, 0.85), rgba(6, 8, 17, 0.92)),
+                url('images/hacker-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #e2e8f0;
             font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
-        /* Navigation Bar */
+        /* ---------------- NAVBAR ---------------- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px 50px;
-            background: rgba(13, 18, 33, 0.6);
+            padding: 20px 40px;
+            background: rgba(13, 18, 33, 0.7);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 255, 204, 0.15);
+            border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-brand {
@@ -46,69 +54,73 @@
             font-weight: 900;
             letter-spacing: 3px;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .nav-brand span {
             color: #00ffcc;
         }
 
-        /* Core Right Side Button Area */
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
-        /* 🚩 SUBMIT THE FLAG BUTTON */
-        .btn-submit-flag {
-            background: linear-gradient(135deg, #00ffcc, #0088ff);
-            color: #060811;
+        /* 🚩 Top Right: SUBMIT THE FLAG BUTTON */
+        .btn-nav-submit {
+            background: rgba(0, 255, 204, 0.1);
+            color: #00ffcc;
             font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 0.95rem;
+            font-weight: 700;
+            font-size: 0.88rem;
             letter-spacing: 1px;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            gap: 6px;
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .btn-submit-flag:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8);
-            background: linear-gradient(135deg, #ffffff, #00ffcc);
+        .btn-nav-submit:hover {
+            background: #00ffcc;
+            color: #060811;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+            transform: translateY(-2px);
         }
 
-        /* Hero Container */
-        .hero-container {
+        /* ---------------- HERO SECTION ---------------- */
+        .hero {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 20px;
-            max-width: 900px;
+            padding: 60px 20px;
+            max-width: 1000px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .hero-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             color: #ffffff;
-            margin-bottom: 15px;
-            line-height: 1.2;
-            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.5), 0 0 60px rgba(0, 255, 204, 0.2);
+            margin-bottom: 10px;
+            line-height: 1.1;
         }
 
         .hero-title span {
@@ -116,20 +128,113 @@
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
-            color: #94a3b8;
-            max-width: 650px;
-            line-height: 1.6;
-            margin-bottom: 35px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.35rem;
+            color: #ffaa00;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+            margin-bottom: 30px;
         }
 
-        /* Challenge Cards Grid */
+        /* 💻 Terminal Window & Typing Animation */
+        .terminal-box {
+            background: rgba(6, 11, 25, 0.9);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            padding: 20px 25px;
+            text-align: left;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 255, 204, 0.05);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-content {
+            color: #00ffcc;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #00ffcc;
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* 🚩 START CHALLENGE 1 BUTTON (CTA) */
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .btn-start-challenge {
+            background: linear-gradient(135deg, #00ffcc, #0088ff);
+            color: #060811;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            padding: 20px 45px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.5), 0 0 50px rgba(0, 136, 255, 0.3);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-start-challenge:hover {
+            transform: translateY(-4px) scale(1.04);
+            background: linear-gradient(135deg, #ffffff, #00ffcc);
+            box-shadow: 0 0 45px rgba(0, 255, 204, 0.9), 0 0 70px rgba(255, 255, 255, 0.5);
+            color: #000;
+        }
+
+        .btn-start-challenge:active {
+            transform: translateY(-1px) scale(0.99);
+        }
+
+        /* ---------------- CHALLENGE OVERVIEW CARDS ---------------- */
         .challenges-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             width: 100%;
-            margin-bottom: 40px;
+            margin-top: 10px;
         }
 
         .challenge-card {
@@ -170,12 +275,15 @@
             line-height: 1.5;
         }
 
+        /* ---------------- FOOTER ---------------- */
         footer {
             text-align: center;
-            padding: 25px;
-            font-size: 0.9rem;
+            padding: 25px 20px;
+            font-size: 0.95rem;
             color: #64748b;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(6, 8, 17, 0.95);
+            border-top: 1px solid rgba(0, 255, 204, 0.15);
+            margin-top: auto;
         }
 
         footer span {
@@ -183,12 +291,20 @@
             font-weight: 700;
         }
 
+        /* Responsive Breakpoints */
         @media (max-width: 768px) {
             nav {
                 padding: 15px 20px;
             }
             .hero-title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .btn-start-challenge {
+                font-size: 1.1rem;
+                padding: 16px 30px;
             }
             .challenges-grid {
                 grid-template-columns: 1fr;
@@ -198,55 +314,102 @@
 </head>
 <body>
 
-    <!-- Navigation Bar with Core Right Action Button -->
+    <!-- Navigation Bar -->
     <nav>
-        <a href="#" class="nav-brand">⚡ NULL<span>SECTOR</span></a>
+        <a href="index.html" class="nav-brand">⚡ NULL<span>SECTOR</span> CTF</a>
 
         <div class="nav-actions">
-            <!-- Right Core Action Button -->
-            <a href="score.html" class="btn-submit-flag">
+            <a href="score.html" class="btn-nav-submit">
                 🚩 SUBMIT THE FLAG
             </a>
         </div>
     </nav>
 
-    <!-- Main Hero Area -->
-    <div class="hero-container">
-        <h1 class="hero-title">WELCOME TO <span>NULLSECTOR</span> CTF</h1>
-        <p class="hero-subtitle">
-            Hack the challenge. Learn the skill. Earn the victory. Test your cybersecurity skills across multiple interactive challenges and claim your spot at the top.
-        </p>
+    <!-- Main Hero Section -->
+    <main class="hero">
+        <h1 class="hero-title">NULL<span>SECTOR</span> CTF</h1>
+        <div class="hero-subtitle">Hack • Learn • Capture the Flag</div>
 
-        <!-- Challenge Quick Cards -->
+        <!-- Terminal Box with Typing Animation -->
+        <div class="terminal-box">
+            <div class="terminal-header">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+            </div>
+            <div class="terminal-content">
+                <span id="typedText"></span><span class="cursor"></span>
+            </div>
+        </div>
+
+        <!-- Call to Action Button -->
+        <div class="cta-container">
+            <a href="challenge1/index.html" class="btn-start-challenge">
+                🚩 START CHALLENGE 1
+            </a>
+        </div>
+
+        <!-- Challenges Grid -->
         <div class="challenges-grid">
             <div class="challenge-card">
                 <div class="challenge-num">CHALLENGE 01</div>
                 <div class="challenge-title">Hidden Source</div>
-                <div class="challenge-desc">Inspect source code files to reveal hidden entry flags.</div>
+                <div class="challenge-desc">Inspect backend structures and source code files to discover hidden access flags.</div>
             </div>
 
             <div class="challenge-card">
                 <div class="challenge-num">CHALLENGE 02</div>
                 <div class="challenge-title">Base64 Decode</div>
-                <div class="challenge-desc">Decode multi-layered cipher payloads to extract credentials.</div>
+                <div class="challenge-desc">Intercept and decode obfuscated multi-layer ciphers to retrieve secret tokens.</div>
             </div>
 
             <div class="challenge-card">
                 <div class="challenge-num">CHALLENGE 03</div>
-                <div class="challenge-title">Command Injection</div>
-                <div class="challenge-desc">Bypass system restrictions to list and access privileged flags.</div>
+                <div class="challenge-title">Command Execution</div>
+                <div class="challenge-desc">Exploit web vulnerabilities to bypass system boundaries and complete the mission.</div>
             </div>
         </div>
-
-        <a href="score.html" class="btn-submit-flag" style="padding: 14px 32px; font-size: 1rem;">
-            ⚡ ENTER LIVE SCOREBOARD
-        </a>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer>
-        👨‍💻 Designed by <span>Dinesh Shinde</span>
+        Designed by <span>Dinesh Shinde</span>
     </footer>
 
+    <!-- Terminal Animation JavaScript -->
+    <script>
+        const textToType = [
+            "Initializing NULLSECTOR Command Shell v2.4...",
+            "Authenticating Operator...",
+            "Status: Ready.",
+            "Click 'START CHALLENGE 1' to launch your target environment!"
+        ];
+
+        let lineIndex = 0;
+        let charIndex = 0;
+        const typedElement = document.getElementById("typedText");
+
+        function typeLine() {
+            if (lineIndex < textToType.length) {
+                const currentLine = textToType[lineIndex];
+                if (charIndex < currentLine.length) {
+                    typedElement.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLine, 35);
+                } else {
+                    typedElement.innerHTML += "<br>> ";
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeLine, 400);
+                }
+            }
+        }
+
+        // Run animation when DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            typedElement.innerHTML = "> ";
+            typeLine();
+        });
+    </script>
 </body>
 </html>
