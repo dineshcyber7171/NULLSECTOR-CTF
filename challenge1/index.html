@@ -1,2 +1,131 @@
-<h1> LEVEL 1 </h1>
-<p> MISSION: find the hidden flag.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NULLSECTOR CTF</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Consolas,monospace;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(-45deg,#000000,#001f3f,#004d40,#4b0082);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+overflow:hidden;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.card{
+width:900px;
+padding:50px;
+background:rgba(0,0,0,.82);
+border:2px solid #00ffff;
+border-radius:15px;
+text-align:center;
+box-shadow:0 0 25px cyan,0 0 60px #00ff88;
+}
+
+h1{
+font-size:60px;
+color:#00ffff;
+text-shadow:0 0 20px cyan;
+margin-bottom:20px;
+}
+
+h2{
+color:#00ff88;
+margin-bottom:25px;
+}
+
+p{
+font-size:22px;
+color:#ffffff;
+line-height:1.8;
+}
+
+.btn{
+display:inline-block;
+margin-top:35px;
+padding:16px 45px;
+background:#00ff88;
+color:#000;
+font-size:22px;
+font-weight:bold;
+text-decoration:none;
+border-radius:10px;
+transition:.3s;
+}
+
+.btn:hover{
+background:#00ffff;
+transform:scale(1.08);
+box-shadow:0 0 20px cyan;
+}
+
+.footer{
+margin-top:40px;
+font-size:18px;
+color:#cccccc;
+}
+
+.footer span{
+color:#00ffff;
+font-weight:bold;
+}
+</style>
+
+</head>
+
+<body> 
+<!-- ===================================================
+Developer Notes (Internal)
+
+FLAG 1:
+NULLSECTOR{view_source_master}
+
+Do not remove this comment.
+=================================================== -->
+
+<div class="card">
+
+<h1>🚩 NULLSECTOR 🚩</h1>
+
+<h2>Cyber Security Beginner CTF</h2>
+
+<p>
+Welcome Agent.
+</p>
+
+<p>
+Your objective is to solve each challenge, capture every hidden flag,
+and unlock the final ACCESS GRANTED page.
+</p>
+
+<a class="btn" href="challenge1/index.html">
+▶ START CHALLENGE
+</a>
+
+<div class="footer">
+Designed by <span>Dinesh Shinde</span><br><br>
+HTML • CSS • JavaScript • Apache • Kali Linux
+</div>
+
+</div>
+
+</body>
+</html>
